@@ -1,0 +1,59 @@
+---
+- name: ensure timezone is set in apache2 php.ini
+  lineinfile:
+    dest: "/etc/php5/apache2/php.ini"
+    regexp: "date.timezone ="
+    line: "date.timezone = {{ server.timezone }}"
+    state: present
+
+- name: "error reporting"
+  become: yes
+  lineinfile:
+    dest: "/etc/php5/apache2/php.ini"
+    regexp: "^;?error_reporting ="
+    line: "error_reporting = {{ php.apache2.error_reporting }}"
+    state: present
+
+- name: "display errors"
+  become: yes
+  lineinfile:
+    dest: "/etc/php5/apache2/php.ini"
+    regexp: "^;?display_errors ="
+    line: "display_errors = {{ php.apache2.display_errors }}"
+    state: present
+
+- name: "expose php"
+  lineinfile:
+    dest: "/etc/php5/apache2/php.ini"
+    regexp: "^;?expose_php ="
+    line: "expose_php = {{ php.apache2.expose_php }}"
+    state: present
+
+- name: "default charset"
+  lineinfile:
+    dest: "/etc/php5/apache2/php.ini"
+    regexp: "^;?default_charset ="
+    line: 'default_charset = "{{ php.apache2.default_charset }}"'
+    state: present
+
+- name: "post max size"
+  become: yes
+  lineinfile:
+    dest: "/etc/php5/apache2/php.ini"
+    regexp: "^;?post_max_size ="
+    line: "post_max_size = {{ php.apache2.post_max_size }}"
+    state: present
+
+- name: "upload max filesize"
+  lineinfile:
+    dest: "/etc/php5/apache2/php.ini"
+    regexp: "^;?upload_max_filesize ="
+    line: "upload_max_filesize = {{ php.apache2.upload_max_filesize }}"
+    state: present
+
+- name: "max file uploads"
+  lineinfile:
+    dest: "/etc/php5/apache2/php.ini"
+    regexp: "^;?max_file_uploads ="
+    line: "max_file_uploads = {{ php.apache2.max_file_uploads }}"
+    state: present

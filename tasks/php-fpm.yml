@@ -1,0 +1,81 @@
+---
+- name: Set permissions on socket - owner
+  lineinfile:
+    dest: "/etc/php5/fpm/pool.d/www.conf"
+    regexp: "^;?listen.owner"
+    line: "listen.owner = www-data"
+    state: present
+
+- name: Set permissions on socket - group
+  lineinfile:
+    dest: "/etc/php5/fpm/pool.d/www.conf"
+    regexp: "^;?listen.group"
+    line: "listen.group = www-data"
+    state: present
+
+- name: Set permissions on socket - mode
+  lineinfile:
+    dest: "/etc/php5/fpm/pool.d/www.conf"
+    regexp: "^;?listen.mode"
+    line: "listen.mode = 0660"
+    state: present
+  notify: restart php5-fpm
+
+- name: ensure timezone is set in fpm php.ini
+  lineinfile:
+    dest: "/etc/php5/fpm/php.ini"
+    regexp: "date.timezone ="
+    line: "date.timezone = {{ server.timezone }}"
+    state: present
+
+- name: "error reporting"
+  become: yes
+  lineinfile:
+    dest: "/etc/php5/fpm/php.ini"
+    regexp: "^;?error_reporting ="
+    line: "error_reporting = {{ php.fpm.error_reporting }}"
+    state: present
+
+- name: "display errors"
+  become: yes
+  lineinfile:
+    dest: "/etc/php5/fpm/php.ini"
+    regexp: "^;?display_errors ="
+    line: "display_errors = {{ php.fpm.display_errors }}"
+    state: present
+
+- name: "expose php"
+  lineinfile:
+    dest: "/etc/php5/fpm/php.ini"
+    regexp: "^;?expose_php ="
+    line: "expose_php = {{ php.fpm.expose_php }}"
+    state: present
+
+- name: "default charset"
+  lineinfile:
+    dest: "/etc/php5/fpm/php.ini"
+    regexp: "^;?default_charset ="
+    line: 'default_charset = "{{ php.fpm.default_charset }}"'
+    state: present
+
+- name: "post max size"
+  sudo: yes
+  lineinfile:
+    dest: "/etc/php5/fpm/php.ini"
+    regexp: "^;?post_max_size ="
+    line: "post_max_size = {{ php.fpm.post_max_size }}"
+    state: present
+
+- name: "upload max filesize"
+  lineinfile:
+    dest: "/etc/php5/fpm/php.ini"
+    regexp: "^;?upload_max_filesize ="
+    line: "upload_max_filesize = {{ php.fpm.upload_max_filesize }}"
+    state: present
+
+- name: "max file uploads"
+  lineinfile:
+    dest: "/etc/php5/fpm/php.ini"
+    regexp: "^;?max_file_uploads ="
+    line: "max_file_uploads = {{ php.fpm.max_file_uploads }}"
+    state: present

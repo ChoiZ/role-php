@@ -1,0 +1,23 @@
+---
+php:
+    install: '1'
+    ppa: php5-5.6
+    packages: [php5-cli, php5-intl, php5-mcrypt, php5-memcache, php5-memcached, php5-curl, php5-gd, php5-imap, php5-mysqlnd, php5-xmlrpc, php5-imagick, php5-json]
+    apache2:
+        opcache_enable: '0'
+        error_reporting: "E_ALL"
+        display_errors: "On"
+        expose_php: "On"
+        default_charset: "UTF-8"
+        post_max_size: "8M"
+        upload_max_filesize: "16M"
+        max_file_uploads: "3"
+    fpm:
+        opcache_enable: '0'
+        error_reporting: "E_ALL"
+        display_errors: "On"
+        expose_php: "On"
+        default_charset: "UTF-8"
+        post_max_size: "8M"
+        upload_max_filesize: "16M"
+        max_file_uploads: "3"
